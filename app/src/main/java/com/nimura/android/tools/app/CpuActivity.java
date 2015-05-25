@@ -1,20 +1,16 @@
-package com.nimura.cpuviewer;
+package com.nimura.android.tools.app;
 
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 
-import com.nimura.cpuviewer.com.nimura.cpuviewer.widget.CpuInfoView;
-import com.nimura.cpuviewer.main.CpuUtils;
+import com.nimura.cpuviewer.R;
+import com.nimura.android.tools.model.CpuUtils;
 
 import java.util.LinkedList;
 import java.util.List;

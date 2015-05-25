@@ -1,4 +1,4 @@
-package com.nimura.cpuviewer.com.nimura.cpuviewer.widget;
+package com.nimura.android.tools.app;
 
 import android.content.Context;
 import android.graphics.Canvas;
