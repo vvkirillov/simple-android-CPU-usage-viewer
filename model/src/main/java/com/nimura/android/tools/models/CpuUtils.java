@@ -1,4 +1,4 @@
-package com.nimura.android.tools.model;
+package com.nimura.android.tools.models;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

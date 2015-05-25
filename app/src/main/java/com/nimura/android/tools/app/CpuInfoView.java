@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-import com.nimura.cpuviewer.R;
-
 import java.util.LinkedList;
 import java.util.List;
 

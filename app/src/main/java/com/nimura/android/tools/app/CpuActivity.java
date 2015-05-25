@@ -2,15 +2,14 @@ package com.nimura.android.tools.app;
 
 import android.app.Activity;
 import android.graphics.Point;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.nimura.cpuviewer.R;
-import com.nimura.android.tools.model.CpuUtils;
+import com.nimura.android.tools.models.CpuUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class CpuActivity extends Activity {
                         LayoutParams.WRAP_CONTENT));
         parentLayout.setOrientation(LinearLayout.VERTICAL);
 
-        Point size = null;
         for(int i=0;i<CpuUtils.getCpuCount();i++) {
             CpuInfoView cp = new CpuInfoView(this, i);
             cp.setLayoutParams(
