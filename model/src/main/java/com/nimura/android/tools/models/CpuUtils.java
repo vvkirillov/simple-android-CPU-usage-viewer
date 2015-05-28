@@ -16,6 +16,7 @@ public abstract class CpuUtils {
     private static final String PROC_STAT = "/proc/stat";
     private static final String PARAM_DELIMITER = " ";
     private static final int PROC_STAT_PARAMS_COUNT = 7;
+    private static final int VALUABLE_PROCSTAT_PARAMETERS_COUNT = 3;
 
     private static final String ID_CPU = "cpu";
     private static final String ID_PROCESSOR = "processor";
@@ -93,7 +94,7 @@ public abstract class CpuUtils {
         }
 
         for(int i=0;i<getCpuCount();i++){
-            String[] tokens = lines.get("cpu"+i);
+            String[] tokens = lines.get(ID_CPU+i);
             if(tokens == null){
                 result.add(null);
             }else{
@@ -158,7 +159,7 @@ public abstract class CpuUtils {
 
     private static long getWorkLoad(long[] args){
         long result = 0;
-        for(int i=0;i<3;i++){
+        for(int i=0;i<VALUABLE_PROCSTAT_PARAMETERS_COUNT;i++){
             result += args[i];
         }
         return result;

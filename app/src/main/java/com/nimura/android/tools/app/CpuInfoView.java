@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class CpuInfoView extends View{
     private final int pointsInView;
+    private final int padding;
+    private final int padding2x;
     private final Paint linePt = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint backgroundPaint = new Paint();
     private final Paint textPaint = new Paint();
@@ -35,6 +37,9 @@ public class CpuInfoView extends View{
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
 
         pointsInView = context.getResources().getInteger(R.integer.pointsInView);
+
+        padding = context.getResources().getInteger(R.integer.cpuWidgetPadding);
+        padding2x = padding << 1;
     }
 
     public void addPoint(int point){
@@ -50,7 +55,6 @@ public class CpuInfoView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         if(points.size() > 1){
-            int padding = 10, padding2x = padding * 2;
             int width = canvas.getWidth() - padding2x;
             int height = canvas.getHeight() - padding2x;
 
@@ -61,17 +65,15 @@ public class CpuInfoView extends View{
             int firstPointIndex = pointsInView - points.size();
             int pointIndex = 0;
 
-            float lastx = -1.0f, lasty = -1.0f;
-            float[] lines = new float[points.size()<<4];
+            Float lastx = null, lasty = null;
+            float[] lines = new float[points.size()<<2];
             int j = 0;
 
             float maxLineHeight = height - cpuLoadingViewTextSize - 5;
-            lastx = -1.0f;
-            lasty = -1.0f;
             for(int i=0;i< pointsInView;i++){
                 if(i >= firstPointIndex){
                     float y = canvas.getHeight() - padding - (float)points.get(pointIndex)*maxLineHeight/100.0f;
-                    if(lastx >= 0.0f){
+                    if(lastx != null){
                         lines[j++] = lastx;
                         lines[j++] = lasty;
                         lines[j++] = x;
