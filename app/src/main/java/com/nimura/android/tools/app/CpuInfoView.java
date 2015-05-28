@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Limi on 24.05.2015.
  */
 public class CpuInfoView extends View{
-    private static final int POINTS_ON_VIEW = 50;
+    private final int pointsInView;
     private final Paint linePt = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint backgroundPaint = new Paint();
     private final Paint textPaint = new Paint();
@@ -33,12 +33,14 @@ public class CpuInfoView extends View{
         textPaint.setTextSize(context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize));
 
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
+
+        pointsInView = context.getResources().getInteger(R.integer.pointsInView);
     }
 
     public void addPoint(int point){
         if(point >= 0 && point <= 100){
             points.add(point);
-            if(points.size() > POINTS_ON_VIEW){
+            if(points.size() > pointsInView){
                 points.remove(0);
             }
         }
@@ -55,8 +57,8 @@ public class CpuInfoView extends View{
             canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
 
             float x = padding;
-            float step = (float)width / (float)(POINTS_ON_VIEW - 1);
-            int firstPointIndex = POINTS_ON_VIEW - points.size();
+            float step = (float)width / (float)(pointsInView - 1);
+            int firstPointIndex = pointsInView - points.size();
             int pointIndex = 0;
 
             float lastx = -1.0f, lasty = -1.0f;
@@ -66,7 +68,7 @@ public class CpuInfoView extends View{
             float maxLineHeight = height - cpuLoadingViewTextSize - 5;
             lastx = -1.0f;
             lasty = -1.0f;
-            for(int i=0;i<POINTS_ON_VIEW;i++){
+            for(int i=0;i< pointsInView;i++){
                 if(i >= firstPointIndex){
                     float y = canvas.getHeight() - padding - (float)points.get(pointIndex)*maxLineHeight/100.0f;
                     if(lastx >= 0.0f){
