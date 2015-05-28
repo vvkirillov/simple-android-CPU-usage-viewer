@@ -2,7 +2,6 @@ package com.nimura.android.tools.app;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
@@ -13,19 +12,27 @@ import java.util.List;
  * Created by Limi on 24.05.2015.
  */
 public class CpuInfoView extends View{
-    private final int POINTS_ON_VIEW = 20;
-    private static final int LINE_COLOR = Color.rgb(42, 255, 0);
-    private static final int BACKGROUNG_COLOR = Color.rgb(0, 40, 0);
-    private static final Paint linePt = new Paint();
+    private static final int POINTS_ON_VIEW = 50;
+    private final Paint linePt = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint backgroundPaint = new Paint();
+    private final Paint textPaint = new Paint();
     private final List<Integer> points = new LinkedList<>();
     private final int cpuIndex;
-    private final float textSize = getResources().getDimension(R.dimen.textsize);
+    private final float cpuLoadingViewTextSize;
 
     public CpuInfoView(Context context, int cpuIndex) {
         super(context);
         this.cpuIndex = cpuIndex;
-        linePt.setColor(LINE_COLOR);
+
+        backgroundPaint.setColor(context.getResources().getColor(R.color.backgroundColor));
+
+        linePt.setColor(context.getResources().getColor(R.color.lineColor));
         linePt.setStrokeWidth(2);
+
+        textPaint.setColor(context.getResources().getColor(R.color.textColor));
+        textPaint.setTextSize(context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize));
+
+        cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
     }
 
     public void addPoint(int point){
@@ -45,9 +52,7 @@ public class CpuInfoView extends View{
             int width = canvas.getWidth() - padding2x;
             int height = canvas.getHeight() - padding2x;
 
-            Paint pt = new Paint();
-            pt.setColor(BACKGROUNG_COLOR);
-            canvas.drawRect(padding, padding, padding + width, padding + height, pt);
+            canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
 
             float x = padding;
             float step = (float)width / (float)(POINTS_ON_VIEW - 1);
@@ -58,7 +63,7 @@ public class CpuInfoView extends View{
             float[] lines = new float[points.size()<<4];
             int j = 0;
 
-            float maxLineHeight = height - textSize - 5;
+            float maxLineHeight = height - cpuLoadingViewTextSize - 5;
             lastx = -1.0f;
             lasty = -1.0f;
             for(int i=0;i<POINTS_ON_VIEW;i++){
@@ -83,11 +88,8 @@ public class CpuInfoView extends View{
                 currentLoad = points.get(points.size() - 1);
             }
 
-            pt = new Paint(Paint.ANTI_ALIAS_FLAG);
-            pt.setColor(LINE_COLOR);
-            pt.setTextSize(textSize);
-            canvas.drawText(String.format("CPU %d load: %d %s", cpuIndex + 1, currentLoad, "%"),
-                    padding, textSize + padding, pt);
+            canvas.drawText(String.format(getResources().getString(R.string.cpu_load_str), cpuIndex + 1, currentLoad, "%"),
+                    padding, cpuLoadingViewTextSize + padding, textPaint);
         }
 
     }

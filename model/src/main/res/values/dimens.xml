@@ -1,0 +1,3 @@
+<resources>
+    <dimen name="cpuLoadingViewTextSize">15sp</dimen>
+</resources>
