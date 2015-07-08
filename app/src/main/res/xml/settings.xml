@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Color settings section -->
+    <PreferenceCategory
+        android:title="@string/color_settings"
+        android:key="pref_key_color_settings">
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="your_preference_key"
+            android:defaultValue="0xff6699cc"
+            android:title="Pick a color with alpha" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

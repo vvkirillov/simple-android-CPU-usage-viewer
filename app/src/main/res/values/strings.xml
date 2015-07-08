@@ -1,4 +1,14 @@
 <resources>
+
+    <!-- Main activity -->
     <string name="app_name">Cpu usage viewer</string>
+    <string name="settings_activity_name">Settings</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Settings activity -->
+    <string name="color_settings">Color settings</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
