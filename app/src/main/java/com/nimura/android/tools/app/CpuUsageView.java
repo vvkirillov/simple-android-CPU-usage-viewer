@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Nimura on 24.05.2015.
  */
-public class CpuInfoView extends View{
+public class CpuUsageView extends View{
     private final int pointsInView;
     private final int padding;
     private final int padding2x;
@@ -28,7 +28,7 @@ public class CpuInfoView extends View{
      * @param cpuIndex cpu index (starting from 0)
      * @param maxPointsInView maximum amount of points to be visible in view
      */
-    public CpuInfoView(Context context, int cpuIndex, int maxPointsInView) {
+    public CpuUsageView(Context context, int cpuIndex, int maxPointsInView) {
         super(context);
         this.cpuIndex = cpuIndex;
         this.pointsInView = maxPointsInView;
@@ -53,7 +53,7 @@ public class CpuInfoView extends View{
      * then the first point in array will be removed.
      * @param point point value, must be in range [0, 100]
      */
-    public void addPoint(int point){
+    public synchronized void addPoint(int point){
         if(point >= 0 && point <= 100){
             points.add(point);
             if(points.size() > pointsInView){
@@ -66,18 +66,18 @@ public class CpuInfoView extends View{
     /**
      * Removes all points
      */
-    public void reset(){
+    public synchronized void reset(){
         points.clear();
         invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(points.size() > 1){
-            int width = canvas.getWidth() - padding2x;
-            int height = canvas.getHeight() - padding2x;
+        int width = canvas.getWidth() - padding2x;
+        int height = canvas.getHeight() - padding2x;
+        canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
 
-            canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
+        if(points.size() > 1){
 
             float x = padding;
             float step = (float)width / (float)(pointsInView - 1);

@@ -14,9 +14,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * Created by Nimura
  */
-public class CpuInfoController {
+public class CpuUsageController {
     private Context context;
-    private final List<CpuInfoView> cpuInfoViews = new LinkedList<>();
+    private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
     private final Handler timerHandler = new Handler();
     private final CpuUpdateRunnable cur = new CpuUpdateRunnable();
     private final AtomicBoolean willRepeat = new AtomicBoolean(true);
@@ -25,11 +25,11 @@ public class CpuInfoController {
     /**
      * Constructor
      * @param context context
-     * @param cpuInfoViews list of CpuInfoView objects
+     * @param cpuUsageViews list of CpuInfoView objects
      */
-    public CpuInfoController(Context context, List<CpuInfoView> cpuInfoViews){
+    public CpuUsageController(Context context, List<CpuUsageView> cpuUsageViews){
         this.context = context;
-        this.cpuInfoViews.addAll(cpuInfoViews);
+        this.cpuUsageViews.addAll(cpuUsageViews);
     }
 
     /**
@@ -45,6 +45,9 @@ public class CpuInfoController {
      */
     public void stop(){
         willRepeat.set(false);
+        for(CpuUsageView civ : cpuUsageViews){
+            civ.reset();
+        }
     }
 
     private class CpuUpdateRunnable implements Runnable{
@@ -56,7 +59,7 @@ public class CpuInfoController {
                 if (prev != null) {
                     int[] loads = CpuUtils.getCpuLoad(prev, now);
                     for (int i = 0; i < loads.length; i++) {
-                        cpuInfoViews.get(i).addPoint(loads[i]);
+                        cpuUsageViews.get(i).addPoint(loads[i]);
                     }
                 }
                 prev = now;

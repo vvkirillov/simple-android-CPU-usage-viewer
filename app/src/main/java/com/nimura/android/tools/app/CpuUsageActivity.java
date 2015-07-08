@@ -1,9 +1,7 @@
 package com.nimura.android.tools.app;
 
-import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -17,10 +15,10 @@ import java.util.List;
 /**
  * Application activity
  */
-public class CpuInfoActivity extends Activity {
+public class CpuUsageActivity extends AppCompatActivity {
+    private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
     private LinearLayout parentLayout;
-    private List<CpuInfoView> cpuInfoViews = new LinkedList<>();
-    private CpuInfoController controller;
+    private CpuUsageController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,30 +32,26 @@ public class CpuInfoActivity extends Activity {
         parentLayout.setOrientation(LinearLayout.VERTICAL);
 
         for(int i=0;i<CpuUtils.getCpuCount();i++) {
-            CpuInfoView cp = new CpuInfoView(this, i, getResources().getInteger(R.integer.pointsInView));
+            CpuUsageView cp = new CpuUsageView(this, i, getResources().getInteger(R.integer.pointsInView));
             cp.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f));
-            cpuInfoViews.add(cp);
+            cpuUsageViews.add(cp);
             parentLayout.addView(cp);
         }
 
         setContentView(parentLayout);
 
-        controller = new CpuInfoController(getApplicationContext(), cpuInfoViews);
+        controller = new CpuUsageController(getApplicationContext(), cpuUsageViews);
         controller.start();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_cpu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
