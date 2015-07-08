@@ -14,13 +14,13 @@ import com.nimura.android.tools.models.CpuUtils;
 import java.util.LinkedList;
 import java.util.List;
 
-
-public class CpuActivity extends Activity {
-    private final Handler timerHandler = new Handler();
-    private final CpuUpdateRunnable cur = new CpuUpdateRunnable();
+/**
+ * Application activity
+ */
+public class CpuInfoActivity extends Activity {
     private LinearLayout parentLayout;
     private List<CpuInfoView> cpuInfoViews = new LinkedList<>();
-    private List<long[]> prev, now;
+    private CpuInfoController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +34,16 @@ public class CpuActivity extends Activity {
         parentLayout.setOrientation(LinearLayout.VERTICAL);
 
         for(int i=0;i<CpuUtils.getCpuCount();i++) {
-            CpuInfoView cp = new CpuInfoView(this, i);
-            cp.setLayoutParams(
-                    new LayoutParams(
-                            LayoutParams.MATCH_PARENT,
-                            0,
-                            1f));
+            CpuInfoView cp = new CpuInfoView(this, i, getResources().getInteger(R.integer.pointsInView));
+            cp.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f));
             cpuInfoViews.add(cp);
             parentLayout.addView(cp);
         }
 
         setContentView(parentLayout);
 
-        timerHandler.postDelayed(cur, 0);
+        controller = new CpuInfoController(getApplicationContext(), cpuInfoViews);
+        controller.start();
     }
 
     @Override
@@ -69,25 +66,5 @@ public class CpuActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class CpuUpdateRunnable implements Runnable{
-
-        @Override
-        public void run() {
-            try {
-                now = CpuUtils.getCpuLoadRaw();
-                if (prev != null) {
-                    int[] loads = CpuUtils.getCpuLoad(prev, now);
-                    for (int i = 0; i < loads.length; i++) {
-                        cpuInfoViews.get(i).addPoint(loads[i]);
-                    }
-                }
-                prev = now;
-            }catch (Throwable e){
-                e.printStackTrace();
-            }
-            timerHandler.postDelayed(this, 1000);
-        }
     }
 }

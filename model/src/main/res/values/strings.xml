@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Model</string>
-    <string name="cpu_load_str">CPU %1$d load: %2$d %3$s</string>
+    <string name="cpu_load_str">CPU %1$d usage: %2$d %3$s</string>
 </resources>

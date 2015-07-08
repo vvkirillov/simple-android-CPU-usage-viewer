@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="lineColor">#2aff00</color>
+    <color name="lineColor">#ff37ff00</color>
     <color name="textColor">#2aff00</color>
     <color name="backgroundColor">#002800</color>
 </resources>

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Limi on 24.05.2015.
+ * Created by Nimura on 24.05.2015.
  */
 public class CpuInfoView extends View{
     private final int pointsInView;
@@ -22,9 +22,16 @@ public class CpuInfoView extends View{
     private final int cpuIndex;
     private final float cpuLoadingViewTextSize;
 
-    public CpuInfoView(Context context, int cpuIndex) {
+    /**
+     * Constructor
+     * @param context context
+     * @param cpuIndex cpu index (starting from 0)
+     * @param maxPointsInView maximum amount of points to be visible in view
+     */
+    public CpuInfoView(Context context, int cpuIndex, int maxPointsInView) {
         super(context);
         this.cpuIndex = cpuIndex;
+        this.pointsInView = maxPointsInView;
 
         backgroundPaint.setColor(context.getResources().getColor(R.color.backgroundColor));
 
@@ -36,12 +43,16 @@ public class CpuInfoView extends View{
 
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
 
-        pointsInView = context.getResources().getInteger(R.integer.pointsInView);
-
         padding = context.getResources().getInteger(R.integer.cpuWidgetPadding);
         padding2x = padding << 1;
     }
 
+    /**
+     * Adds one point at the end of the list.
+     * If points array size exceed maximum size,
+     * then the first point in array will be removed.
+     * @param point point value, must be in range [0, 100]
+     */
     public void addPoint(int point){
         if(point >= 0 && point <= 100){
             points.add(point);
@@ -49,6 +60,14 @@ public class CpuInfoView extends View{
                 points.remove(0);
             }
         }
+        invalidate();
+    }
+
+    /**
+     * Removes all points
+     */
+    public void reset(){
+        points.clear();
         invalidate();
     }
 
