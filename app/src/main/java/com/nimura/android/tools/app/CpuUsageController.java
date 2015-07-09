@@ -1,13 +1,11 @@
 package com.nimura.android.tools.app;
 
-import android.content.Context;
 import android.os.Handler;
 
 import com.nimura.android.tools.models.CpuUtils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Controller for application logic
@@ -15,20 +13,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by Nimura
  */
 public class CpuUsageController {
-    private Context context;
     private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
     private final Handler timerHandler = new Handler();
     private final CpuUpdateRunnable cur = new CpuUpdateRunnable();
-    private final AtomicBoolean willRepeat = new AtomicBoolean(true);
+    private boolean shouldRepeat = true;
+    private int updateInterval = 1000;
     private List<long[]> prev, now;
 
     /**
      * Constructor
-     * @param context context
      * @param cpuUsageViews list of CpuInfoView objects
      */
-    public CpuUsageController(Context context, List<CpuUsageView> cpuUsageViews){
-        this.context = context;
+    public CpuUsageController(List<CpuUsageView> cpuUsageViews){
         this.cpuUsageViews.addAll(cpuUsageViews);
     }
 
@@ -36,7 +32,7 @@ public class CpuUsageController {
      * Starts the view updates
      */
     public void start(){
-        willRepeat.set(true);
+        shouldRepeat = true;
         timerHandler.postDelayed(cur, 0);
     }
 
@@ -44,13 +40,54 @@ public class CpuUsageController {
      * Stops the view updates
      */
     public void stop(){
-        willRepeat.set(false);
+        shouldRepeat = false;
         for(CpuUsageView civ : cpuUsageViews){
             civ.reset();
         }
     }
 
-    private class CpuUpdateRunnable implements Runnable{
+    /**
+     * Sets a new line color.
+     * Will be applied on next iteration
+     * @param color a new line color
+     */
+    public void setLineColor(int color){
+        for (CpuUsageView cuv : cpuUsageViews) {
+            cuv.setLineColor(color);
+        }
+    }
+
+    /**
+     * Sets a new background color.
+     * Will be applied on next iteration
+     * @param color a new background color
+     */
+    public void setBackgroundColor(int color){
+        for (CpuUsageView cuv : cpuUsageViews) {
+            cuv.setBackgroundColor(color);
+        }
+    }
+
+    /**
+     * Sets a new text color.
+     * Will be applied on next iteration
+     * @param color a new text color
+     */
+    public void setTextColor(int color){
+        for (CpuUsageView cuv : cpuUsageViews) {
+            cuv.setTextColor(color);
+        }
+    }
+
+    /**
+     * Sets an update interval (in milliseconds)
+     * @param updateInterval an update interval (in milliseconds)
+     */
+    public void setUpdateInterval(int updateInterval){
+        this.updateInterval = updateInterval;
+    }
+
+    private final class CpuUpdateRunnable implements Runnable{
 
         @Override
         public void run() {
@@ -66,8 +103,8 @@ public class CpuUsageController {
             }catch (Throwable e){
                 e.printStackTrace();
             }
-            if(willRepeat.get()) {
-                timerHandler.postDelayed(this, context.getResources().getInteger(R.integer.cpuWidgetUpdateInterval));
+            if(shouldRepeat) {
+                timerHandler.postDelayed(this, updateInterval);
             }
         }
     }

@@ -7,9 +7,32 @@
         android:key="pref_key_color_settings">
 
         <yuku.ambilwarna.widget.AmbilWarnaPreference
-            android:key="your_preference_key"
-            android:defaultValue="0xff6699cc"
-            android:title="Pick a color with alpha" />
+            android:key="line_color"
+            android:defaultValue="0xff37ff00"
+            android:title="@string/line_color" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="background_color"
+            android:defaultValue="0xff002800"
+            android:title="@string/background_color" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="text_color"
+            android:defaultValue="0xff2aff00"
+            android:title="@string/text_color" />
+
+    </PreferenceCategory>
+
+    <!-- Common setting section -->
+    <PreferenceCategory
+        android:title="@string/common_settings"
+        android:key="pref_key_common_settings">
+
+        <ListPreference
+            android:title="@string/update_interval"
+            android:key="update_interval"
+            android:entries="@array/update_intervals_labels"
+            android:entryValues="@array/update_intervals_values"/>
 
     </PreferenceCategory>
 

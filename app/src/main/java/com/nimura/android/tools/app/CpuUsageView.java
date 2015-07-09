@@ -15,7 +15,7 @@ public class CpuUsageView extends View{
     private final int pointsInView;
     private final int padding;
     private final int padding2x;
-    private final Paint linePt = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint backgroundPaint = new Paint();
     private final Paint textPaint = new Paint();
     private final List<Integer> points = new LinkedList<>();
@@ -33,14 +33,8 @@ public class CpuUsageView extends View{
         this.cpuIndex = cpuIndex;
         this.pointsInView = maxPointsInView;
 
-        backgroundPaint.setColor(context.getResources().getColor(R.color.backgroundColor));
-
-        linePt.setColor(context.getResources().getColor(R.color.lineColor));
-        linePt.setStrokeWidth(2);
-
-        textPaint.setColor(context.getResources().getColor(R.color.textColor));
+        linePaint.setStrokeWidth(2);
         textPaint.setTextSize(context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize));
-
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
 
         padding = context.getResources().getInteger(R.integer.cpuWidgetPadding);
@@ -53,7 +47,7 @@ public class CpuUsageView extends View{
      * then the first point in array will be removed.
      * @param point point value, must be in range [0, 100]
      */
-    public synchronized void addPoint(int point){
+    public void addPoint(int point){
         if(point >= 0 && point <= 100){
             points.add(point);
             if(points.size() > pointsInView){
@@ -64,9 +58,33 @@ public class CpuUsageView extends View{
     }
 
     /**
+     * Sets a new line color
+     * @param color a new line color
+     */
+    public void setLineColor(int color){
+        linePaint.setColor(color);
+    }
+
+    /**
+     * Sets a new background color
+     * @param color a new background color
+     */
+    public void setBackgroundColor(int color){
+        backgroundPaint.setColor(color);
+    }
+
+    /**
+     * Sets a new text color
+     * @param color a new text color
+     */
+    public void setTextColor(int color){
+        textPaint.setColor(color);
+    }
+
+    /**
      * Removes all points
      */
-    public synchronized void reset(){
+    public void reset(){
         points.clear();
         invalidate();
     }
@@ -78,7 +96,6 @@ public class CpuUsageView extends View{
         canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
 
         if(points.size() > 1){
-
             float x = padding;
             float step = (float)width / (float)(pointsInView - 1);
             int firstPointIndex = pointsInView - points.size();
@@ -104,7 +121,7 @@ public class CpuUsageView extends View{
                 }
                 x += step;
             }
-            canvas.drawLines(lines, 0, lines.length, linePt);
+            canvas.drawLines(lines, 0, lines.length, linePaint);
 
             int currentLoad = 0;
             if(!points.isEmpty()) {

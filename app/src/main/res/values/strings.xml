@@ -4,11 +4,28 @@
     <string name="app_name">Cpu usage viewer</string>
     <string name="settings_activity_name">Settings</string>
     <string name="action_settings">Settings</string>
+    <string name="cpu_load_str">CPU %1$d usage: %2$d %3$s</string>
 
     <!-- Settings activity -->
     <string name="color_settings">Color settings</string>
+    <string name="line_color">Line color</string>
+    <string name="background_color">Background color</string>
+    <string name="text_color">Text color</string>
+    <string name="common_settings">Common settings</string>
+    <string name="update_interval">Update interval</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="update_intervals_labels">
+        <item>0.5 seconds</item>
+        <item>1 second</item>
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+    </string-array>
+
+    <string-array name="update_intervals_values">
+        <item>500</item>
+        <item>1000</item>
+        <item>5000</item>
+        <item>10000</item>
+    </string-array>
 
 </resources>

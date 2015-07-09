@@ -2,5 +2,4 @@
 <resources>
     <integer name="pointsInView">100</integer>
     <integer name="cpuWidgetPadding">10</integer>
-    <integer name="cpuWidgetUpdateInterval">1000</integer>
 </resources>
