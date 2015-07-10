@@ -21,7 +21,7 @@ import java.util.List;
 public class CpuUsageActivity extends AppCompatActivity {
     private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
     private LinearLayout parentLayout;
-    private CpuUsageController controller;
+    private final CpuUsageController cpuUsageController = CpuUsageController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,11 @@ public class CpuUsageActivity extends AppCompatActivity {
 
     private void initController() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        controller = new CpuUsageController(cpuUsageViews);
-        controller.setLineColor(prefs.getInt(AppConst.LINE_COLOR_ID, getResources().getColor(R.color.lineColor)));
-        controller.setBackgroundColor(prefs.getInt(AppConst.BACKGROUND_COLOR_ID, getResources().getColor(R.color.backgroundColor)));
-        controller.setTextColor(prefs.getInt(AppConst.TEXT_COLOR_ID, getResources().getColor(R.color.textColor)));
-        controller.start();
+        cpuUsageController.setCpuUsageViews(cpuUsageViews);
+        cpuUsageController.setLineColor(prefs.getInt(AppConst.LINE_COLOR_PREFERENCE_ID, getResources().getColor(R.color.lineColor)));
+        cpuUsageController.setBackgroundColor(prefs.getInt(AppConst.BACKGROUND_COLOR_PREFERENCE_ID, getResources().getColor(R.color.backgroundColor)));
+        cpuUsageController.setTextColor(prefs.getInt(AppConst.TEXT_COLOR_PREFERENCE_ID, getResources().getColor(R.color.textColor)));
+        cpuUsageController.start();
     }
 
     @Override
@@ -78,7 +78,6 @@ public class CpuUsageActivity extends AppCompatActivity {
     }
 
     private void openSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 }

@@ -19,12 +19,22 @@ public class CpuUsageController {
     private boolean shouldRepeat = true;
     private int updateInterval = 1000;
     private List<long[]> prev, now;
+    private static CpuUsageController me;
+
+    private CpuUsageController(){}
+
+    public static CpuUsageController getInstance(){
+        if(me == null){
+            me = new CpuUsageController();
+        }
+        return me;
+    }
 
     /**
-     * Constructor
+     * Sets a list of CpuInfoViews objects
      * @param cpuUsageViews list of CpuInfoView objects
      */
-    public CpuUsageController(List<CpuUsageView> cpuUsageViews){
+    public void setCpuUsageViews(List<CpuUsageView> cpuUsageViews){
         this.cpuUsageViews.addAll(cpuUsageViews);
     }
 
