@@ -105,7 +105,8 @@ public class CpuUsageView extends View{
             float[] lines = new float[points.size() * 4];
             int j = 0;
 
-            float maxLineHeight = height - cpuLoadingViewTextSize - 5;
+            float maxLineHeight = height - cpuLoadingViewTextSize - padding2x;
+
             for(int i=0;i< pointsInView;i++){
                 if(i >= firstPointIndex){
                     float y = canvas.getHeight() - padding - (float)points.get(pointIndex)*maxLineHeight/100.0f;
