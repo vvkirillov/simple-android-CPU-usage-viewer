@@ -133,9 +133,9 @@ public class CpuUsageView extends View{
                 //horizontal
                 float wirey0 = cpuLoadingViewTextSize + padding2x;
                 float wirey = wirey0;
-                while (wirey > wirey0 + maxLineHeight) {
+                while (wirey < wirey0 + maxLineHeight) {
                     canvas.drawLine(x, wirey, x + width, wirey, meshPaint);
-                    wirey -= wireStep;
+                    wirey += wireStep;
                 }
                 //vertical
                 float wirex0 = padding;
