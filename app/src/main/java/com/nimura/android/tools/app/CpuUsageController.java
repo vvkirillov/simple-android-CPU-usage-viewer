@@ -9,8 +9,6 @@ import java.util.List;
 
 /**
  * Controller for application logic
- *
- * Created by Nimura
  */
 public class CpuUsageController {
     private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
@@ -59,7 +57,7 @@ public class CpuUsageController {
     /**
      * Sets a new line color.
      * Will be applied on next iteration
-     * @param color a new line color
+     * @param color new line color
      */
     public void setLineColor(int color){
         for (CpuUsageView cuv : cpuUsageViews) {
@@ -70,7 +68,7 @@ public class CpuUsageController {
     /**
      * Sets a new background color.
      * Will be applied on next iteration
-     * @param color a new background color
+     * @param color new background color
      */
     public void setBackgroundColor(int color){
         for (CpuUsageView cuv : cpuUsageViews) {
@@ -79,9 +77,19 @@ public class CpuUsageController {
     }
 
     /**
+     * Sets a new mesh color
+     * @param color new mesh color
+     */
+    public void setMeshColor(int color){
+        for (CpuUsageView cuv : cpuUsageViews) {
+            cuv.setMeshColor(color);
+        }
+    }
+
+    /**
      * Sets a new text color.
      * Will be applied on next iteration
-     * @param color a new text color
+     * @param color new text color
      */
     public void setTextColor(int color){
         for (CpuUsageView cuv : cpuUsageViews) {
@@ -95,6 +103,16 @@ public class CpuUsageController {
      */
     public void setUpdateInterval(int updateInterval){
         this.updateInterval = updateInterval;
+    }
+
+    /**
+     * Sets if the mesh must be drawn
+     * @param drawMesh if true, mesh will be drawn;
+     */
+    public void setDrawMesh(boolean drawMesh){
+        for (CpuUsageView cuv : cpuUsageViews) {
+            cuv.setDrawMesh(drawMesh);
+        }
     }
 
     private final class CpuUpdateRunnable implements Runnable{

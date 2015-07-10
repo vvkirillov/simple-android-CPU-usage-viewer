@@ -8,17 +8,22 @@
 
         <yuku.ambilwarna.widget.AmbilWarnaPreference
             android:key="line_color"
-            android:defaultValue="0xff37ff00"
+            android:defaultValue="@color/lineColor"
             android:title="@string/line_color" />
 
         <yuku.ambilwarna.widget.AmbilWarnaPreference
+            android:key="mesh_color"
+            android:defaultValue="@color/meshColor"
+            android:title="@string/mesh_color" />
+
+        <yuku.ambilwarna.widget.AmbilWarnaPreference
             android:key="background_color"
-            android:defaultValue="0xff002800"
+            android:defaultValue="@color/backgroundColor"
             android:title="@string/background_color" />
 
         <yuku.ambilwarna.widget.AmbilWarnaPreference
             android:key="text_color"
-            android:defaultValue="0xff2aff00"
+            android:defaultValue="@color/textColor"
             android:title="@string/text_color" />
 
     </PreferenceCategory>
@@ -34,6 +39,11 @@
             android:entries="@array/update_intervals_labels"
             android:entryValues="@array/update_intervals_values"
             android:defaultValue="@string/default_update_interval"
+            />
+
+        <SwitchPreference
+            android:title="@string/draw_mesh"
+            android:key="draw_mesh"
             />
 
     </PreferenceCategory>

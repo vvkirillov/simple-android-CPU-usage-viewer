@@ -8,7 +8,6 @@ import com.nimura.android.tools.app.AppConst;
 /**
  * Provides convenient methods for application logging
  * using strings defined as string resources
- * Created by vkirillov on 10.07.2015.
  */
 public final class LogUtils {
 

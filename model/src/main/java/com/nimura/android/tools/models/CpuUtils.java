@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Nimura on 23.05.2015.
+ * Set of utils for gathering information about CPU usage
  */
-public abstract class CpuUtils {
+public final class CpuUtils {
     private static final String CPU_INFO = "proc/cpuinfo";
     private static final String PROC_STAT = "/proc/stat";
     private static final String PARAM_DELIMITER = " ";
@@ -23,9 +23,11 @@ public abstract class CpuUtils {
 
     private static Integer cpu_count = null;
 
+    private CpuUtils(){}
+
     /**
-     * Returns number of CPU in the system
-     * @return number of CPU
+     * Returns number of CPUs in the system
+     * @return number of CPUs in the system
      */
     public static final int getCpuCount(){
         if(cpu_count == null) {
@@ -115,10 +117,10 @@ public abstract class CpuUtils {
     }
 
     /**
-     * Returns load output per CPU
+     * Returns usage per CPU in percents from 0 to 100
      * @param prev last CPU usage values array
-     * @param now
-     * @return
+     * @param now fresh CPUU usage values array
+     * @return usage per CPU in percents from 0 to 100
      */
     public static final int[] getCpuUsage(List<long[]> prev, List<long[]> now){
         int cpuCount = getCpuCount();

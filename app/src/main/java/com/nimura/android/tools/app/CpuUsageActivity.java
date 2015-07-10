@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.nimura.android.tools.models.CpuUtils;
+import com.nimura.android.tools.utils.PreferenceUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -51,11 +52,14 @@ public class CpuUsageActivity extends AppCompatActivity {
     }
 
     private void initController() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         cpuUsageController.setCpuUsageViews(cpuUsageViews);
-        cpuUsageController.setLineColor(prefs.getInt(AppConst.LINE_COLOR_PREFERENCE_ID, getResources().getColor(R.color.lineColor)));
-        cpuUsageController.setBackgroundColor(prefs.getInt(AppConst.BACKGROUND_COLOR_PREFERENCE_ID, getResources().getColor(R.color.backgroundColor)));
-        cpuUsageController.setTextColor(prefs.getInt(AppConst.TEXT_COLOR_PREFERENCE_ID, getResources().getColor(R.color.textColor)));
+        PreferenceUtils.getLineColorFromPreferences(this, sharedPreferences);
+        PreferenceUtils.getMeshColorFromPreferences(this, sharedPreferences);
+        PreferenceUtils.getBackgroundColorFromPreferences(this, sharedPreferences);
+        PreferenceUtils.getTextColorFromPreferences(this, sharedPreferences);
+        PreferenceUtils.getUpdateIntervalFromPreferences(this, sharedPreferences);
+        PreferenceUtils.getDrawMeshFlag(this, sharedPreferences);
         cpuUsageController.start();
     }
 

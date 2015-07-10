@@ -9,18 +9,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Nimura on 24.05.2015.
+ * Control responsible for drawing CPU usage plot
  */
 public class CpuUsageView extends View{
+    private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint backgroundPaint = new Paint();
+    private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint meshPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final List<Integer> points = new LinkedList<>();
     private final int pointsInView;
     private final int padding;
     private final int padding2x;
-    private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint backgroundPaint = new Paint();
-    private final Paint textPaint = new Paint();
-    private final List<Integer> points = new LinkedList<>();
     private final int cpuIndex;
     private final float cpuLoadingViewTextSize;
+    private boolean drawMesh = true;
 
     /**
      * Constructor
@@ -33,9 +35,10 @@ public class CpuUsageView extends View{
         this.cpuIndex = cpuIndex;
         this.pointsInView = maxPointsInView;
 
-        linePaint.setStrokeWidth(context.getResources().getDimension(R.dimen.line_width));
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
+        linePaint.setStrokeWidth(context.getResources().getDimension(R.dimen.line_width));
         textPaint.setTextSize(cpuLoadingViewTextSize);
+        meshPaint.setStrokeWidth(getContext().getResources().getDimension(R.dimen.mesh_width));
 
         padding = context.getResources().getInteger(R.integer.cpuWidgetPadding);
         padding2x = padding * 2;
@@ -59,7 +62,7 @@ public class CpuUsageView extends View{
 
     /**
      * Sets a new line color
-     * @param color a new line color
+     * @param color new line color
      */
     public void setLineColor(int color){
         linePaint.setColor(color);
@@ -67,18 +70,34 @@ public class CpuUsageView extends View{
 
     /**
      * Sets a new background color
-     * @param color a new background color
+     * @param color new background color
      */
     public void setBackgroundColor(int color){
         backgroundPaint.setColor(color);
     }
 
     /**
+     * Sets a new mesh color
+     * @param color mesh color
+     */
+    public void setMeshColor(int color){
+        meshPaint.setColor(color);
+    }
+
+    /**
      * Sets a new text color
-     * @param color a new text color
+     * @param color new text color
      */
     public void setTextColor(int color){
         textPaint.setColor(color);
+    }
+
+    /**
+     * Sets if the mesh must be drawn
+     * @param drawMesh if true, mesh will be drawn;
+     */
+    public void setDrawMesh(boolean drawMesh){
+        this.drawMesh = drawMesh;
     }
 
     /**
@@ -91,6 +110,7 @@ public class CpuUsageView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        //TODO refactoring needed
         int width = canvas.getWidth() - padding2x;
         int height = canvas.getHeight() - padding2x;
         canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
@@ -102,11 +122,31 @@ public class CpuUsageView extends View{
             int pointIndex = 0;
 
             Float lastx = null, lasty = null;
-            float[] lines = new float[points.size() * 4];
+
             int j = 0;
 
             float maxLineHeight = height - cpuLoadingViewTextSize - padding2x;
 
+            if(drawMesh) {
+                //
+                float wireStep = step * 8.0f;
+                //horizontal
+                float wirey0 = cpuLoadingViewTextSize + padding2x;
+                float wirey = wirey0;
+                while (wirey > wirey0 + maxLineHeight) {
+                    canvas.drawLine(x, wirey, x + width, wirey, meshPaint);
+                    wirey -= wireStep;
+                }
+                //vertical
+                float wirex0 = padding;
+                float wirex = wirex0;
+                while (wirex < wirex0 + width) {
+                    canvas.drawLine(wirex + 1, cpuLoadingViewTextSize + padding2x, wirex, height + padding, meshPaint);
+                    wirex += wireStep;
+                }
+            }
+
+            float[] lines = new float[points.size() * 4];
             for(int i=0;i< pointsInView;i++){
                 if(i >= firstPointIndex){
                     float y = canvas.getHeight() - padding - (float)points.get(pointIndex)*maxLineHeight/100.0f;

@@ -10,9 +10,11 @@
     <string name="color_settings">Color settings</string>
     <string name="line_color">Line color</string>
     <string name="background_color">Background color</string>
+    <string name="mesh_color">Mesh color</string>
     <string name="text_color">Text color</string>
     <string name="common_settings">Common settings</string>
     <string name="update_interval">Update interval</string>
+    <string name="draw_mesh">Draw mesh</string>
 
     <string-array name="update_intervals_labels">
         <item>0.5 seconds</item>
