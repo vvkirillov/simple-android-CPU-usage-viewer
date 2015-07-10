@@ -32,7 +32,9 @@
             android:title="@string/update_interval"
             android:key="update_interval"
             android:entries="@array/update_intervals_labels"
-            android:entryValues="@array/update_intervals_values"/>
+            android:entryValues="@array/update_intervals_values"
+            android:defaultValue="@string/default_update_interval"
+            />
 
     </PreferenceCategory>
 

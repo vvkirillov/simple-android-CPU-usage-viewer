@@ -18,7 +18,7 @@ public class CpuUsageController {
     private final CpuUpdateRunnable cur = new CpuUpdateRunnable();
     private boolean shouldRepeat = true;
     private int updateInterval = 1000;
-    private List<long[]> prev, now;
+    private List<long[]> oldCpuUsageValues, freshCpuUsageValues;
     private static CpuUsageController me;
 
     private CpuUsageController(){}
@@ -102,14 +102,14 @@ public class CpuUsageController {
         @Override
         public void run() {
             try {
-                now = CpuUtils.getCpuLoadRaw();
-                if (prev != null) {
-                    int[] loads = CpuUtils.getCpuLoad(prev, now);
+                freshCpuUsageValues = CpuUtils.getCpuUsageRaw();
+                if (oldCpuUsageValues != null) {
+                    int[] loads = CpuUtils.getCpuUsage(oldCpuUsageValues, freshCpuUsageValues);
                     for (int i = 0; i < loads.length; i++) {
                         cpuUsageViews.get(i).addPoint(loads[i]);
                     }
                 }
-                prev = now;
+                oldCpuUsageValues = freshCpuUsageValues;
             }catch (Throwable e){
                 e.printStackTrace();
             }

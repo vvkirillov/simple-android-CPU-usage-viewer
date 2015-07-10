@@ -28,4 +28,9 @@
         <item>10000</item>
     </string-array>
 
+    <string name="default_update_interval">1000</string>
+
+    <!-- Errors messages-->
+    <string name="error_update_interval_convertion">Cannot convert update interval value \"%1$s\" to int</string>
+
 </resources>

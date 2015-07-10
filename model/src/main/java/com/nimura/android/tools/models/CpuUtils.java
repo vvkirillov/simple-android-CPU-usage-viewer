@@ -64,7 +64,7 @@ public abstract class CpuUtils {
      * @return list of raw load outputs per CPU
      *  (index of the element in the list is the index of CPU)
      */
-    public static final List<long[]> getCpuLoadRaw(){
+    public static final List<long[]> getCpuUsageRaw(){
         List<long[]> result = new ArrayList<>(getCpuCount());
 
         Map<String, String[]> lines = new HashMap<>();
@@ -116,11 +116,11 @@ public abstract class CpuUtils {
 
     /**
      * Returns load output per CPU
-     * @param prev
+     * @param prev last CPU usage values array
      * @param now
      * @return
      */
-    public static final int[] getCpuLoad(List<long[]> prev, List<long[]> now){
+    public static final int[] getCpuUsage(List<long[]> prev, List<long[]> now){
         int cpuCount = getCpuCount();
         int[] result = new int[cpuCount];
         if(prev != null && now != null &&

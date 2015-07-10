@@ -33,12 +33,12 @@ public class CpuUsageView extends View{
         this.cpuIndex = cpuIndex;
         this.pointsInView = maxPointsInView;
 
-        linePaint.setStrokeWidth(2);
-        textPaint.setTextSize(context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize));
+        linePaint.setStrokeWidth(context.getResources().getDimension(R.dimen.line_width));
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
+        textPaint.setTextSize(cpuLoadingViewTextSize);
 
         padding = context.getResources().getInteger(R.integer.cpuWidgetPadding);
-        padding2x = padding << 1;
+        padding2x = padding * 2;
     }
 
     /**
@@ -102,7 +102,7 @@ public class CpuUsageView extends View{
             int pointIndex = 0;
 
             Float lastx = null, lasty = null;
-            float[] lines = new float[points.size()<<2];
+            float[] lines = new float[points.size() * 4];
             int j = 0;
 
             float maxLineHeight = height - cpuLoadingViewTextSize - 5;
@@ -129,7 +129,7 @@ public class CpuUsageView extends View{
             }
 
             canvas.drawText(String.format(getResources().getString(R.string.cpu_load_str), cpuIndex + 1, currentLoad, "%"),
-                    padding, cpuLoadingViewTextSize + padding, textPaint);
+                    padding * 2, cpuLoadingViewTextSize + padding, textPaint);
         }
 
     }

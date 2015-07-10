@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class CpuUsageActivity extends AppCompatActivity {
     private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
-    private LinearLayout parentLayout;
     private final CpuUsageController cpuUsageController = CpuUsageController.getInstance();
+    private LinearLayout parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
