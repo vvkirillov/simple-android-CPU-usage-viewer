@@ -106,7 +106,8 @@ public class CpuUsageController {
                 if (oldCpuUsageValues != null) {
                     int[] loads = CpuUtils.getCpuUsage(oldCpuUsageValues, freshCpuUsageValues);
                     for (int i = 0; i < loads.length; i++) {
-                        cpuUsageViews.get(i).addPoint(loads[i]);
+                        CpuUsageView cuv = cpuUsageViews.get(i);
+                        cuv.addPoint(loads[i]);
                     }
                 }
                 oldCpuUsageValues = freshCpuUsageValues;
