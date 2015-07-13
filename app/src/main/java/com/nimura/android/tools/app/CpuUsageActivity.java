@@ -84,4 +84,10 @@ public class CpuUsageActivity extends AppCompatActivity {
     private void openSettingsActivity() {
         startActivity(new Intent(this, SettingsActivity.class));
     }
+
+    @Override
+    protected void onStop() {
+        cpuUsageController.stop();
+        super.onStop();
+    }
 }

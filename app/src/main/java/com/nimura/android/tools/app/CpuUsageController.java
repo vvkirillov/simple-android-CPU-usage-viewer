@@ -14,7 +14,6 @@ public class CpuUsageController {
     private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
     private final Handler timerHandler = new Handler();
     private final CpuUpdateRunnable cur = new CpuUpdateRunnable();
-    private boolean shouldRepeat = true;
     private int updateInterval = 1000;
     private List<long[]> oldCpuUsageValues, freshCpuUsageValues;
     private static CpuUsageController me;
@@ -41,7 +40,6 @@ public class CpuUsageController {
      * Starts the view updates
      */
     public void start(){
-        shouldRepeat = true;
         timerHandler.postDelayed(cur, 0);
     }
 
@@ -49,7 +47,7 @@ public class CpuUsageController {
      * Stops the view updates
      */
     public void stop(){
-        shouldRepeat = false;
+        timerHandler.removeCallbacks(cur);
         for(CpuUsageView civ : cpuUsageViews){
             civ.reset();
         }
@@ -133,9 +131,8 @@ public class CpuUsageController {
             }catch (Throwable e){
                 e.printStackTrace();
             }
-            if(shouldRepeat) {
-                timerHandler.postDelayed(this, updateInterval);
-            }
+
+            timerHandler.postDelayed(this, updateInterval);
         }
     }
 }
