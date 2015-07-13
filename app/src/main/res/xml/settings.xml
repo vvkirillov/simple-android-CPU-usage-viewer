@@ -44,6 +44,7 @@
         <SwitchPreference
             android:title="@string/draw_mesh"
             android:key="draw_mesh"
+            android:defaultValue="true"
             />
 
     </PreferenceCategory>
