@@ -40,6 +40,7 @@ public class CpuUsageController {
      * Starts the view updates
      */
     public void start(){
+        timerHandler.removeCallbacks(cur);
         timerHandler.postDelayed(cur, 0);
     }
 
@@ -48,9 +49,6 @@ public class CpuUsageController {
      */
     public void stop(){
         timerHandler.removeCallbacks(cur);
-        for(CpuUsageView civ : cpuUsageViews){
-            civ.reset();
-        }
     }
 
     /**
@@ -106,7 +104,7 @@ public class CpuUsageController {
 
     /**
      * Sets if the mesh must be drawn
-     * @param drawMesh if true, mesh will be drawn;
+     * @param drawMesh if true, mesh will be drawn
      */
     public void setDrawMesh(boolean drawMesh){
         for (CpuUsageView cuv : cpuUsageViews) {

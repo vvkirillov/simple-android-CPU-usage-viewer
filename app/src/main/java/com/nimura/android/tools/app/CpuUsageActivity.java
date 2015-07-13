@@ -86,8 +86,8 @@ public class CpuUsageActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         cpuUsageController.stop();
-        super.onStop();
+        super.onDestroy();
     }
 }
