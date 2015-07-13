@@ -42,6 +42,7 @@ public class CpuUsageView extends View{
 
         padding = context.getResources().getInteger(R.integer.cpuWidgetPadding);
         padding2x = padding * 2;
+        setWillNotDraw(false);
     }
 
     /**
@@ -110,6 +111,8 @@ public class CpuUsageView extends View{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
         //TODO refactoring needed
         int width = canvas.getWidth() - padding2x;
         int height = canvas.getHeight() - padding2x;

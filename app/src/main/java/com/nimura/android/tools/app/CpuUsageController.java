@@ -33,6 +33,7 @@ public class CpuUsageController {
      * @param cpuUsageViews list of CpuInfoView objects
      */
     public void setCpuUsageViews(List<CpuUsageView> cpuUsageViews){
+        this.cpuUsageViews.clear();
         this.cpuUsageViews.addAll(cpuUsageViews);
     }
 
