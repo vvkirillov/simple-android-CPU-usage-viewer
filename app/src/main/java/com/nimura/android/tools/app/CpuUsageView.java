@@ -154,7 +154,12 @@ public class CpuUsageView extends View{
     }
 
     private void drawMesh(Canvas canvas) {
-        float meshStep = maxLineHeight / 10.0f;
+        float divider = 10.0f;
+        float meshStep = maxLineHeight / divider;
+        while(meshStep < 10.0f && divider > 0){
+            divider -= 2.0f;
+            meshStep = maxLineHeight / divider;
+        }
 
         //horizontal lines
         float meshx0 = padding;
