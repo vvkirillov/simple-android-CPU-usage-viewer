@@ -3,6 +3,7 @@ package com.nimura.android.tools.app;
 import android.os.Handler;
 
 import com.nimura.android.tools.models.CpuUtils;
+import com.nimura.android.tools.utils.LogUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,11 +12,13 @@ import java.util.List;
  * Controller for application logic
  */
 public class CpuUsageController {
+    private static final int FIRST_LAUNCH_INTERVAL = 500;
     private final List<CpuUsageView> cpuUsageViews = new LinkedList<>();
     private final Handler timerHandler = new Handler();
     private final CpuUpdateRunnable cur = new CpuUpdateRunnable();
     private int updateInterval = 1000;
     private List<long[]> oldCpuUsageValues, freshCpuUsageValues;
+    private boolean firstLaunch = true;
     private static CpuUsageController me;
 
     private CpuUsageController(){}
@@ -41,6 +44,7 @@ public class CpuUsageController {
      */
     public void start(){
         timerHandler.removeCallbacks(cur);
+        firstLaunch = true;
         timerHandler.postDelayed(cur, 0);
     }
 
@@ -49,6 +53,7 @@ public class CpuUsageController {
      */
     public void stop(){
         timerHandler.removeCallbacks(cur);
+        firstLaunch = false;
     }
 
     /**
@@ -130,7 +135,12 @@ public class CpuUsageController {
                 e.printStackTrace();
             }
 
-            timerHandler.postDelayed(this, updateInterval);
+            if(firstLaunch){
+                firstLaunch = false;
+                timerHandler.postDelayed(this, FIRST_LAUNCH_INTERVAL);
+            }else{
+                timerHandler.postDelayed(this, updateInterval);
+            }
         }
     }
 }
