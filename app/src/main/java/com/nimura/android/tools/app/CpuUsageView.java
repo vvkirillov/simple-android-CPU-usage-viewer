@@ -23,6 +23,8 @@ public class CpuUsageView extends View{
     private final int cpuIndex;
     private final float cpuLoadingViewTextSize;
     private boolean drawMesh = true;
+    private final int NUMBER_OF_POINTS = 100;
+    private final float[] lines = new float[NUMBER_OF_POINTS * 4];
 
     /**
      * Constructor
@@ -52,7 +54,7 @@ public class CpuUsageView extends View{
      * @param point point value, must be in range [0, 100]
      */
     public void addPoint(int point){
-        if(point >= 0 && point <= 100){
+        if(point >= 0 && point <= NUMBER_OF_POINTS){
             points.add(point);
             if(points.size() > pointsInView){
                 points.remove(0);
@@ -114,13 +116,15 @@ public class CpuUsageView extends View{
         super.onDraw(canvas);
 
         //TODO refactoring needed
-        int width = canvas.getWidth() - padding2x;
-        int height = canvas.getHeight() - padding2x;
-        canvas.drawRect(padding, padding, padding + width, padding + height, backgroundPaint);
+        //Area dimension
+        final int areaWidth = canvas.getWidth() - padding2x;
+        final int areaHeight = canvas.getHeight() - padding2x;
+
+        canvas.drawRect(padding, padding, padding + areaWidth, padding + areaHeight, backgroundPaint);
 
         if(points.size() > 1){
             float x = padding;
-            float step = (float)width / (float)(pointsInView - 1);
+            float step = (float)areaWidth / (float)(pointsInView - 1);
             int firstPointIndex = pointsInView - points.size();
             int pointIndex = 0;
 
@@ -128,7 +132,7 @@ public class CpuUsageView extends View{
 
             int j = 0;
 
-            float maxLineHeight = height - cpuLoadingViewTextSize - padding2x;
+            float maxLineHeight = areaHeight - cpuLoadingViewTextSize - padding2x;
 
             if(drawMesh) {
                 //
@@ -137,19 +141,20 @@ public class CpuUsageView extends View{
                 float wirey0 = cpuLoadingViewTextSize + padding2x;
                 float wirey = wirey0;
                 while (wirey < wirey0 + maxLineHeight) {
-                    canvas.drawLine(x, wirey, x + width, wirey, meshPaint);
+                    canvas.drawLine(x, wirey, x + areaWidth, wirey, meshPaint);
                     wirey += wireStep;
                 }
                 //vertical
                 float wirex0 = padding;
                 float wirex = wirex0;
-                while (wirex < wirex0 + width) {
-                    canvas.drawLine(wirex + 1, cpuLoadingViewTextSize + padding2x, wirex, height + padding, meshPaint);
+                while (wirex < wirex0 + areaWidth) {
+                    canvas.drawLine(wirex + 1, cpuLoadingViewTextSize + padding2x, wirex, areaHeight + padding, meshPaint);
                     wirex += wireStep;
                 }
             }
 
-            float[] lines = new float[points.size() * 4];
+            //Draw plot
+            int pointsArraySize = 0;
             for(int i=0;i< pointsInView;i++){
                 if(i >= firstPointIndex){
                     float y = canvas.getHeight() - padding - (float)points.get(pointIndex)*maxLineHeight/100.0f;
@@ -158,6 +163,7 @@ public class CpuUsageView extends View{
                         lines[j++] = lasty;
                         lines[j++] = x;
                         lines[j++] = y;
+                        pointsArraySize += 4;
                     }
                     pointIndex++;
                     lastx = x;
@@ -165,7 +171,7 @@ public class CpuUsageView extends View{
                 }
                 x += step;
             }
-            canvas.drawLines(lines, 0, lines.length, linePaint);
+            canvas.drawLines(lines, 0, pointsArraySize, linePaint);
 
             int currentLoad = 0;
             if(!points.isEmpty()) {
