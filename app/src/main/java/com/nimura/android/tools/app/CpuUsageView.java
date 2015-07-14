@@ -13,29 +13,33 @@ import java.util.List;
  */
 public class CpuUsageView extends View{
     private final Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final Paint backgroundPaint = new Paint();
+    private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint meshPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final List<Integer> points = new LinkedList<>();
-    private final int pointsInView;
+    private final int maxNumberOfPoints;
     private final int padding;
     private final int padding2x;
     private final int cpuIndex;
     private final float cpuLoadingViewTextSize;
+    private final float[] linePoints;
+
+    private int areaWidth;
+    private int areaHeight;
+    private float maxLineHeight;
     private boolean drawMesh = true;
-    private final int NUMBER_OF_POINTS = 100;
-    private final float[] lines = new float[NUMBER_OF_POINTS * 4];
 
     /**
      * Constructor
      * @param context context
      * @param cpuIndex cpu index (starting from 0)
-     * @param maxPointsInView maximum amount of points to be visible in view
+     * @param maxNumberOfPoints maximum amount of points to be visible in view
      */
-    public CpuUsageView(Context context, int cpuIndex, int maxPointsInView) {
+    public CpuUsageView(Context context, int cpuIndex, int maxNumberOfPoints) {
         super(context);
         this.cpuIndex = cpuIndex;
-        this.pointsInView = maxPointsInView;
+        this.maxNumberOfPoints = maxNumberOfPoints;
+        linePoints = new float[maxNumberOfPoints * 4];
 
         cpuLoadingViewTextSize = context.getResources().getDimension(R.dimen.cpuLoadingViewTextSize);
         linePaint.setStrokeWidth(context.getResources().getDimension(R.dimen.line_width));
@@ -54,9 +58,9 @@ public class CpuUsageView extends View{
      * @param point point value, must be in range [0, 100]
      */
     public void addPoint(int point){
-        if(point >= 0 && point <= NUMBER_OF_POINTS){
+        if(point >= 0 && point <= maxNumberOfPoints){
             points.add(point);
-            if(points.size() > pointsInView){
+            if(points.size() > maxNumberOfPoints){
                 points.remove(0);
             }
         }
@@ -115,72 +119,90 @@ public class CpuUsageView extends View{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //TODO refactoring needed
-        //Area dimension
-        final int areaWidth = canvas.getWidth() - padding2x;
-        final int areaHeight = canvas.getHeight() - padding2x;
+        updateDimensionVariables(canvas);
+        drawBackgroundRect(canvas);
 
-        canvas.drawRect(padding, padding, padding + areaWidth, padding + areaHeight, backgroundPaint);
-
-        if(points.size() > 1){
-            float x = padding;
-            float step = (float)areaWidth / (float)(pointsInView - 1);
-            int firstPointIndex = pointsInView - points.size();
-            int pointIndex = 0;
-
-            Float lastx = null, lasty = null;
-
-            int j = 0;
-
-            float maxLineHeight = areaHeight - cpuLoadingViewTextSize - padding2x;
-
-            if(drawMesh) {
-                //
-                float wireStep = step * 8.0f;
-                //horizontal
-                float wirey0 = cpuLoadingViewTextSize + padding2x;
-                float wirey = wirey0;
-                while (wirey < wirey0 + maxLineHeight) {
-                    canvas.drawLine(x, wirey, x + areaWidth, wirey, meshPaint);
-                    wirey += wireStep;
-                }
-                //vertical
-                float wirex0 = padding;
-                float wirex = wirex0;
-                while (wirex < wirex0 + areaWidth) {
-                    canvas.drawLine(wirex + 1, cpuLoadingViewTextSize + padding2x, wirex, areaHeight + padding, meshPaint);
-                    wirex += wireStep;
-                }
-            }
-
-            //Draw plot
-            int pointsArraySize = 0;
-            for(int i=0;i< pointsInView;i++){
-                if(i >= firstPointIndex){
-                    float y = canvas.getHeight() - padding - (float)points.get(pointIndex)*maxLineHeight/100.0f;
-                    if(lastx != null){
-                        lines[j++] = lastx;
-                        lines[j++] = lasty;
-                        lines[j++] = x;
-                        lines[j++] = y;
-                        pointsArraySize += 4;
-                    }
-                    pointIndex++;
-                    lastx = x;
-                    lasty = y;
-                }
-                x += step;
-            }
-            canvas.drawLines(lines, 0, pointsArraySize, linePaint);
-
-            int currentLoad = 0;
-            if(!points.isEmpty()) {
-                currentLoad = points.get(points.size() - 1);
-            }
-
-            canvas.drawText(String.format(getResources().getString(R.string.cpu_load_str), cpuIndex + 1, currentLoad, "%"),
-                    padding * 2, cpuLoadingViewTextSize + padding, textPaint);
+        if (drawMesh) {
+            drawMesh(canvas);
         }
 
+        if(points.size() > 1){
+            drawPlot(canvas);
+        }
+
+        drawCpuUsageLabel(canvas, getCurrentLoad());
+    }
+
+    private int getCurrentLoad() {
+        int result = 0;
+        if(!points.isEmpty()) {
+            result = points.get(points.size() - 1);
+        }
+        return result;
+    }
+
+    private void updateDimensionVariables(Canvas canvas) {
+        areaWidth = canvas.getWidth() - padding2x;
+        areaHeight = canvas.getHeight() - padding2x;
+        maxLineHeight = areaHeight - cpuLoadingViewTextSize - padding2x;
+    }
+
+    private void drawBackgroundRect(Canvas canvas) {
+        canvas.drawRect(padding, padding, padding + areaWidth, padding + areaHeight, backgroundPaint);
+    }
+
+    private void drawMesh(Canvas canvas) {
+        float step = (float)areaWidth / (float)(maxNumberOfPoints - 1);
+        float x = padding;
+        float wireStep = step * 8.0f;
+
+        //horizontal lines
+        float wirey0 = cpuLoadingViewTextSize + padding2x;
+        float wirey = wirey0;
+        while (wirey < wirey0 + maxLineHeight) {
+            canvas.drawLine(x, wirey, x + areaWidth, wirey, meshPaint);
+            wirey += wireStep;
+        }
+
+        //vertical lines
+        float wirex0 = padding;
+        float wirex = wirex0;
+        while (wirex < wirex0 + areaWidth) {
+            canvas.drawLine(wirex + 1, cpuLoadingViewTextSize + padding2x, wirex, areaHeight + padding, meshPaint);
+            wirex += wireStep;
+        }
+    }
+
+    private void drawPlot(Canvas canvas) {
+        int firstPointIndex = maxNumberOfPoints - points.size();
+        int cpuUsagePointIndex = 0;
+        int linePointIndex = 0;
+        int pointArraySize = 0;
+        Float lastx = null, lasty = null;
+        float stepx = (float)areaWidth / (float)(maxNumberOfPoints - 1);
+        float x = padding;
+
+        for(int i=0;i< maxNumberOfPoints;i++){
+            if(i >= firstPointIndex){
+                float y = canvas.getHeight() - padding - (float)points.get(cpuUsagePointIndex)*maxLineHeight/100.0f;
+                if(lastx != null){
+                    linePoints[linePointIndex++] = lastx;
+                    linePoints[linePointIndex++] = lasty;
+                    linePoints[linePointIndex++] = x;
+                    linePoints[linePointIndex++] = y;
+                    pointArraySize += 4;
+                }
+                cpuUsagePointIndex++;
+                lastx = x;
+                lasty = y;
+            }
+            x += stepx;
+        }
+        canvas.drawLines(linePoints, 0, pointArraySize, linePaint);
+    }
+
+    private void drawCpuUsageLabel(Canvas canvas, int currentLoad) {
+        canvas.drawText(String.format(getResources().getString(R.string.cpu_load_str), cpuIndex + 1, currentLoad, "%"),
+                padding * 2, cpuLoadingViewTextSize + padding, textPaint);
     }
 }
