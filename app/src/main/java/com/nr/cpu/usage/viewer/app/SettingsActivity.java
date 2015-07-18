@@ -1,12 +1,11 @@
-package com.nimura.android.tools.app;
+package com.nr.cpu.usage.viewer.app;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.nimura.android.tools.utils.LogUtils;
-import com.nimura.android.tools.utils.PreferenceUtils;
+import com.nr.cpu.usage.viewer.utils.PreferenceUtils;
 
 
 /**

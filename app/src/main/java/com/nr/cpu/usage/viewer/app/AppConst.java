@@ -1,4 +1,4 @@
-package com.nimura.android.tools.app;
+package com.nr.cpu.usage.viewer.app;
 
 /**
  * Global application constants

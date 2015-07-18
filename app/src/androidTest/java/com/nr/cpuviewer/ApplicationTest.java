@@ -1,4 +1,4 @@
-package com.nimura.cpuviewer;
+package com.nr.cpuviewer;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

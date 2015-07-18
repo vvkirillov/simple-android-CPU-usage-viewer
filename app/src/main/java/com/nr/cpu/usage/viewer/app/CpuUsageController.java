@@ -1,9 +1,8 @@
-package com.nimura.android.tools.app;
+package com.nr.cpu.usage.viewer.app;
 
 import android.os.Handler;
 
-import com.nimura.android.tools.models.CpuUtils;
-import com.nimura.android.tools.utils.LogUtils;
+import com.nr.cpu.usage.models.CpuUtils;
 
 import java.util.LinkedList;
 import java.util.List;

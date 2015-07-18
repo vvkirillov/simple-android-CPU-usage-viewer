@@ -1,9 +1,9 @@
-package com.nimura.android.tools.utils;
+package com.nr.cpu.usage.viewer.utils;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.nimura.android.tools.app.AppConst;
+import com.nr.cpu.usage.viewer.app.AppConst;
 
 /**
  * Provides convenient methods for application logging

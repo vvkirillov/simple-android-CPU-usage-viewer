@@ -1,4 +1,4 @@
-package com.nimura.android.tools.models;
+package com.nr.cpu.usage.models;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

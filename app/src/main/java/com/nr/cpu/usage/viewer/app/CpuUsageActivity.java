@@ -1,4 +1,4 @@
-package com.nimura.android.tools.app;
+package com.nr.cpu.usage.viewer.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.nimura.android.tools.models.CpuUtils;
-import com.nimura.android.tools.utils.PreferenceUtils;
+import com.nr.cpu.usage.models.CpuUtils;
+import com.nr.cpu.usage.viewer.utils.PreferenceUtils;
 
 import java.util.LinkedList;
 import java.util.List;
