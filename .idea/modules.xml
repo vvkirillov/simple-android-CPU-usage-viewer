@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/androidTools.iml" filepath="$PROJECT_DIR$/androidTools.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/model/model.iml" filepath="$PROJECT_DIR$/model/model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.nr.android.utils/com.nr.android.utils.iml" filepath="$PROJECT_DIR$/com.nr.android.utils/com.nr.android.utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.nr.cpu.usage.viewer.iml" filepath="$PROJECT_DIR$/com.nr.cpu.usage.viewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.nr.cpu.usage.viewer.app/com.nr.cpu.usage.viewer.app.iml" filepath="$PROJECT_DIR$/com.nr.cpu.usage.viewer.app/com.nr.cpu.usage.viewer.app.iml" />
     </modules>
   </component>
 </project>

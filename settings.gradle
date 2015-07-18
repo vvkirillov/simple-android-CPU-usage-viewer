@@ -1,1 +1,1 @@
-include ':app', ':model'
+include ':com.nr.cpu.usage.viewer.app', ':com.nr.android.utils'
