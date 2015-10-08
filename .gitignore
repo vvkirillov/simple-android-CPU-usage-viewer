@@ -6,3 +6,9 @@
 /build
 /captures
 /app/app-release.apk
+.idea
+*.iml
+/com.nr.cpu.usage.viewer.app/com.nr.cpu.usage.viewer.app.iml
+/com.nr.android.utils/com.nr.android.utils.iml
+app
+model
